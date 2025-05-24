@@ -83,7 +83,7 @@ public class RessourceController {
             ressource.setNom(ressourceDTO.getNom() != null ? ressourceDTO.getNom() : ressource.getNom());
             ressource.setType(ressourceDTO.getType() != null ? ressourceDTO.getType() : ressource.getType());
             ressource.setCout(ressourceDTO.getCout() != null ? ressourceDTO.getCout() : ressource.getCout());
-            ressource.setDisponibilite(ressourceDTO.getDisponibilite() != null ? ressourceDTO.getDisponibilite() : ressource.getDisponibilite());
+            ressource.setDisponibilite(ressourOceDT.getDisponibilite() != null ? ressourceDTO.getDisponibilite() : ressource.getDisponibilite());
             Ressource updatedRessource = ressourceRepository.save(ressource);
             return ResponseEntity.ok(updatedRessource);
         } catch (Exception e) {
