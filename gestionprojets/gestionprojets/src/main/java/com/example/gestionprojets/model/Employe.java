@@ -1,38 +1,32 @@
 package com.example.gestionprojets.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Employe {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nom;
-    private String email;
     private String role;
-    private String equipe;
 
-    // Constructeurs
+    @OneToMany(mappedBy = "responsable", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
+    private List<Tache> taches = new ArrayList<>();
+
+    // Constructors
     public Employe() {}
-    public Employe(String nom, String email, String role, String equipe) {
-        this.nom = nom;
-        this.email = email;
-        this.role = role;
-        this.equipe = equipe;
-    }
 
-    // Getters et setters
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getNom() { return nom; }
     public void setNom(String nom) { this.nom = nom; }
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
-    public String getEquipe() { return equipe; }
-    public void setEquipe(String equipe) { this.equipe = equipe; }
+    public List<Tache> getTaches() { return taches; }
+    public void setTaches(List<Tache> taches) { this.taches = taches; }
 }

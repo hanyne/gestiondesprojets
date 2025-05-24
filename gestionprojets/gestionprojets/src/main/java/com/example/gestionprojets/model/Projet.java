@@ -1,42 +1,52 @@
 package com.example.gestionprojets.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Projet {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nom;
-    private String dateDebut;
-    private String dateFin;
-    private double budget;
+    private LocalDate dateDebut;
+    private LocalDate dateFin;
+    private Double budget;
     private String statut;
 
-    // Constructeurs
-    public Projet() {}
-    public Projet(String nom, String dateDebut, String dateFin, double budget, String statut) {
-        this.nom = nom;
-        this.dateDebut = dateDebut;
-        this.dateFin = dateFin;
-        this.budget = budget;
-        this.statut = statut;
-    }
+    @OneToMany(mappedBy = "projet", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
+    private List<Tache> taches = new ArrayList<>();
 
-    // Getters et setters
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "projet_ressource",
+            joinColumns = @JoinColumn(name = "projet_id"),
+            inverseJoinColumns = @JoinColumn(name = "ressource_id")
+    )
+    private List<Ressource> ressources = new ArrayList<>();
+
+    // Constructors
+    public Projet() {}
+
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getNom() { return nom; }
     public void setNom(String nom) { this.nom = nom; }
-    public String getDateDebut() { return dateDebut; }
-    public void setDateDebut(String dateDebut) { this.dateDebut = dateDebut; }
-    public String getDateFin() { return dateFin; }
-    public void setDateFin(String dateFin) { this.dateFin = dateFin; }
-    public double getBudget() { return budget; }
-    public void setBudget(double budget) { this.budget = budget; }
+    public LocalDate getDateDebut() { return dateDebut; }
+    public void setDateDebut(LocalDate dateDebut) { this.dateDebut = dateDebut; }
+    public LocalDate getDateFin() { return dateFin; }
+    public void setDateFin(LocalDate dateFin) { this.dateFin = dateFin; }
+    public Double getBudget() { return budget; }
+    public void setBudget(Double budget) { this.budget = budget; }
     public String getStatut() { return statut; }
     public void setStatut(String statut) { this.statut = statut; }
+    public List<Tache> getTaches() { return taches; }
+    public void setTaches(List<Tache> taches) { this.taches = taches; }
+    public List<Ressource> getRessources() { return ressources; }
+    public void setRessources(List<Ressource> ressources) { this.ressources = ressources; }
 }
